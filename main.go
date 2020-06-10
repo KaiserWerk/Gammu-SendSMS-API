@@ -55,13 +55,13 @@ func main() {
 		Addr: ":5050",
 	}
 
-	done := make(chan bool)
-	notify := make(chan os.Signal)
+	doneCh := make(chan bool)
+	notifyCh := make(chan os.Signal)
 
-	signal.Notify(notify, os.Interrupt)
+	signal.Notify(notifyCh, os.Interrupt)
 
 	go func() {
-		<-notify
+		<-notifyCh
 		ctx, cancel := context.WithTimeout(context.Background(), 30 * time.Second)
 		defer cancel()
 
@@ -70,12 +70,12 @@ func main() {
 		if err != nil {
 			panic("Could not gracefully shut down server: " + err.Error())
 		}
-		close(done)
+		close(doneCh)
 	}()
 
 	if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 		log.Fatal("Server could not be started")
 	}
-	<-done
+	<-doneCh
 	fmt.Println("Server shutdown complete")
 }
