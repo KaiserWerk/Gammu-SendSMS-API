@@ -1,0 +1,17 @@
+package main
+
+var schemaString = `BEGIN TRANSACTION;
+CREATE TABLE IF NOT EXISTS "message_queue" (
+	"id"	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
+	"messagetext"	TEXT NOT NULL,
+	"recipient"	TEXT NOT NULL,
+	"send_at"	TEXT NOT NULL
+);
+CREATE TABLE IF NOT EXISTS "access" (
+	"id"	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
+	"description"	TEXT NOT NULL,
+	"token"	TEXT NOT NULL UNIQUE,
+	"valid_until"	TEXT NOT NULL
+);
+COMMIT;
+`
