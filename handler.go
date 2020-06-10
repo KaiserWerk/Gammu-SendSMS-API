@@ -1,18 +1,9 @@
 package main
 
 import (
-	"errors"
 	"fmt"
 	"net/http"
 )
-
-func getHeaderIfSet(r *http.Request, key string) (string, error) {
-	header := r.Header.Get(key)
-	if header == "" {
-		return "", errors.New("header is not set or empty")
-	}
-	return header, nil
-}
 
 // For teh lulz
 func handleHomePage(w http.ResponseWriter, r *http.Request) {

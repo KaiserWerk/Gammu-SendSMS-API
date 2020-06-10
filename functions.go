@@ -2,11 +2,21 @@ package main
 
 import (
 	"database/sql"
+	"errors"
 	"fmt"
+	"net/http"
 	"os"
 	"os/exec"
 	"strings"
 )
+
+func getHeaderIfSet(r *http.Request, key string) (string, error) {
+	header := r.Header.Get(key)
+	if header == "" {
+		return "", errors.New("header is not set or empty")
+	}
+	return header, nil
+}
 
 func sendSMS(m string, r string) {
 	cmd := exec.Command("timeout", "10", "gammu", "-c", "/opt/.gammurc", "sendsms", "TEXT", r, "-text", m)
